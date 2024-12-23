@@ -10,15 +10,8 @@ private:
     std::vector<std::unique_ptr<Analyzer>> analyzers;
 
 public:
-    void addAnalyzer(std::unique_ptr<Analyzer> analyzer) {
-        analyzers.push_back(std::move(analyzer));
-    }
-
-    void analyze(const std::string& code) {
-        for (const auto& analyzer : analyzers) {
-            analyzer->analyze(code);
-        }
-    }
+    void registerAnalyzer(std::unique_ptr<Analyzer> analyzer);
+    void analyzeCode(const std::string& code);
 };
 
 #endif // ANALYSIS_MANAGER_H

@@ -1,22 +1,32 @@
-#include <iostream>
- 
 #include "analysisManager/AnalysisManager.h"
 #include "analyzerFactory/AnalyzerFactory.h"
+#include "shared/AnalyzerTypes.h"
+#include <iostream>
 
 int main() {
-    AnalysisManager manager;
+    std::string sampleCode = R"(
+        int main() {
+            int x = 5
+            return 0;
+        }
+    )";
 
-    // Create analyzers using the factory
-    auto bugAnalyzer = AnalyzerFactory::createAnalyzer(AnalyzerType::Bug);
-    auto securityAnalyzer = AnalyzerFactory::createAnalyzer(AnalyzerType::Security);
+    // Create BugDetectionAnalyzer using the factory
+    auto bugDetectionAnalyzer = AnalyzerFactory::createAnalyzer(CodeScanCategoriesType::BugDetection);
 
-    // Add analyzers to the manager
-    manager.addAnalyzer(std::move(bugAnalyzer));
-    manager.addAnalyzer(std::move(securityAnalyzer));
+    // Add sub-analyzers dynamically using the factory
+    auto bugDetection = dynamic_cast<BugDetectionAnalyzer*>(bugDetectionAnalyzer.get());
+    if (bugDetection) {
+        bugDetection->addSubAnalyzer(BugScanAnalyzerType::SyntaxError, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::SyntaxError));
+        bugDetection->addSubAnalyzer(BugScanAnalyzerType::LogicalBug, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::LogicalBug));
+    }
 
-    // Analyze the given code
-    std::string code = "int main() { return 0; }";
-    manager.analyze(code);
+    // Create AnalysisManager and add analyzers
+    AnalysisManager analysisManager;
+    analysisManager.registerAnalyzer(std::move(bugDetectionAnalyzer));
 
+    // Analyze the code and display bugs
+    analysisManager.analyzeCode(sampleCode);
+    
     return 0;
 }
