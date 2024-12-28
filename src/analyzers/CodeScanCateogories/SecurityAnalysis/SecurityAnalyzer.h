@@ -9,7 +9,7 @@ class SecurityAnalyzer : public Analyzer {
 public:
        std::vector<Bug> analyze(const std::string& code) override;
 
-       virtual CodeScanCategoriesType getType() const {
+       virtual CodeScanCategoriesType getType() const override {
            return CodeScanCategoriesType::Security;
        }
 };
