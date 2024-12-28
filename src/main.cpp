@@ -18,7 +18,8 @@ int main() {
     auto bugDetection = dynamic_cast<BugDetectionAnalyzer*>(bugDetectionAnalyzer.get());
     if (bugDetection) {
         bugDetection->addSubAnalyzer(BugScanAnalyzerType::SyntaxError, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::SyntaxError));
-        bugDetection->addSubAnalyzer(BugScanAnalyzerType::LogicalBug, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::LogicalBug));
+        
+        // bugDetection->addSubAnalyzer(BugScanAnalyzerType::LogicalBug, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::LogicalBug));
     }
 
     // Create AnalysisManager and add analyzers
