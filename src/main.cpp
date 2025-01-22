@@ -7,6 +7,8 @@ int main() {
     std::string sampleCode = R"(
         int main() {
             int x = 5
+            z=10;
+            x ="1"
             return 0;
         }
     )";

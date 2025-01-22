@@ -8,14 +8,11 @@
 class SyntaxErrorAnalyzer : public Analyzer {   
 
 private:
-    // Helper method to tokenize the code
-    void tokenizeCode(const std::string& code);
-
-    // Helper methods for syntax checks
+    
     void checkMissingSemicolons(const std::string& code, std::vector<Bug>& bugs);
-    void checkUndefinedVariables(const std::string& code);
-    void checkMismatchedBrackets(const std::string& code);
-    void checkTypeMismatches(const std::string& code);
+    void checkUndefinedVariables(const std::string& code, std::vector<Bug>& errors);
+    void checkMismatchedBrackets(const std::string& code, std::vector<Bug>& errors);
+    void checkTypeMismatches(const std::string& code, std::vector<Bug>& errors);
 
     // Report errors
     void reportErrors();
