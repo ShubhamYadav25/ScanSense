@@ -27,7 +27,7 @@ public:
         switch (type) {
             case BugScanAnalyzerType::SyntaxError:
                 return std::make_unique<SyntaxErrorAnalyzer>();
-            case BugScanAnalyzerType::LogicalBug:
+            case BugScanAnalyzerType::LogicalError:
                     throw std::logic_error("PerformanceIssueAnalyzer not implemented yet.");
             case BugScanAnalyzerType::PerformanceIssue:
                 // Return your PerformanceIssueAnalyzer here

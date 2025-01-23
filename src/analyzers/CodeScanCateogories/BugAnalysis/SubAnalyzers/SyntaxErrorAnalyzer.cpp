@@ -17,6 +17,11 @@ SyntaxErrorAnalyzer::SyntaxErrorAnalyzer()
     // Initialization
 }
 
+SyntaxErrorAnalyzer::~SyntaxErrorAnalyzer()
+{
+    // Cleanup
+}
+
 std::vector<Bug> SyntaxErrorAnalyzer::analyze(const std::string &code)
 {
     std::vector<Bug> bugs;
@@ -269,11 +274,6 @@ void SyntaxErrorAnalyzer::reportErrors()
             std::cout << error << std::endl;
         }
     }
-}
-
-SyntaxErrorAnalyzer::~SyntaxErrorAnalyzer()
-{
-    // Cleanup
 }
 
 /***

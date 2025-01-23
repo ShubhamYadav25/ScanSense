@@ -20,6 +20,7 @@ Makefile
 # CLion
 .idea/
 # VSCode
+# .vscode/
 # Visual Studio
 *.vcxproj
 *.vcxproj.filters

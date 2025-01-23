@@ -16,7 +16,7 @@ enum class CodeScanCategoriesType {
 // Enum for sub-analyzers under Bug Detection
 enum class BugScanAnalyzerType {
     SyntaxError,
-    LogicalBug,
+    LogicalError,
     PerformanceIssue,
     BestPracticeViolation,
     SecurityVulnerability,
