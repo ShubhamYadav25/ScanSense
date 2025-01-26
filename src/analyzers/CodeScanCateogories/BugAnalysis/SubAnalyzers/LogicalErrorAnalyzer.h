@@ -9,26 +9,17 @@ class LogicalErrorAnalyzer : public Analyzer {
 
 private:
     
-    // 1. Incorrect Loop Conditions
+    // 1. Incorrect Loop Conditions  && Off-by-One Errors
     void checkIncorrectLoopConditions(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 2. Off-by-One Errors
-    // void checkOffByOneErrors(const std::string& code, std::vector<Bug>& bugs);
+    // 2. Incorrect Boolean Logic
+    void checkIncorrectBooleanLogic(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 3. Incorrect Boolean Logic
-    // void checkIncorrectBooleanLogic(const std::string& code, std::vector<Bug>& bugs);
+    // 3. Incorrect Comparison Operators
+    void checkIncorrectComparisonOperators(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 4. Redundant Conditions
-    // void checkRedundantConditions(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 5. Incorrect Comparison Operators
-    // void checkIncorrectComparisonOperators(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 6. Incorrect Assignment in Conditions
-    // void checkAssignmentInConditions(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 7. Incorrect Order of Operations
-    // void checkIncorrectOrderOfOperations(const std::string& code, std::vector<Bug>& bugs);
+    // 4. Incorrect Order of Operations
+    void checkIncorrectOrderOfOperations(const std::string& code, std::vector<Bug>& bugs);
 
     // // 8. Incorrect Loop Variable Updates
     // void checkIncorrectLoopVariableUpdates(const std::string& code, std::vector<Bug>& bugs);

@@ -11,6 +11,32 @@ int main() {
             x ="1"
             for(int i=0;i<=10;i++){
             }
+             if (true) {
+                // Redundant condition
+            }
+
+            bool x = false;
+            if (x == true) {
+                // Suspicious boolean expression
+            }
+             if (x != false) {
+                // Suspicious comparison
+            }
+            int y = 0;
+            if (y = 1) {
+                // Potential typo
+            }
+            int result1 = a + b * c; // Potential issue
+            int result2 = (a + b) * c; // Correct
+
+            bool x = true, y = false, z = true;
+            if (x && y || z) { // Potential issue
+                // Do something
+            }
+
+            if ((x && y) || z) { // Correct
+                // Do something
+            }
             return 0;
         }
     )";
