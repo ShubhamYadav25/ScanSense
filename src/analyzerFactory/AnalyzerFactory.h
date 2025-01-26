@@ -5,6 +5,7 @@
 #include <memory>
 #include "analyzers/CodeScanCateogories/BugAnalysis/BugAnalyzer.h"
 #include "analyzers/CodeScanCateogories/BugAnalysis/SubAnalyzers/SyntaxErrorAnalyzer.h"
+#include "analyzers/CodeScanCateogories/BugAnalysis/SubAnalyzers/LogicalErrorAnalyzer.h"
 #include "analyzers/CodeScanCateogories/SecurityAnalysis/SecurityAnalyzer.h"
 #include <stdexcept>
 
@@ -28,7 +29,7 @@ public:
             case BugScanAnalyzerType::SyntaxError:
                 return std::make_unique<SyntaxErrorAnalyzer>();
             case BugScanAnalyzerType::LogicalError:
-                    throw std::logic_error("PerformanceIssueAnalyzer not implemented yet.");
+                return std::make_unique<LogicalErrorAnalyzer>();
             case BugScanAnalyzerType::PerformanceIssue:
                 // Return your PerformanceIssueAnalyzer here
                 throw std::logic_error("PerformanceIssueAnalyzer not implemented yet.");

@@ -9,6 +9,8 @@ int main() {
             int x = 5
             z=10;
             x ="1"
+            for(int i=0;i<=10;i++){
+            }
             return 0;
         }
     )";
@@ -20,8 +22,7 @@ int main() {
     auto bugDetection = dynamic_cast<BugDetectionAnalyzer*>(bugDetectionAnalyzer.get());
     if (bugDetection) {
         bugDetection->addSubAnalyzer(BugScanAnalyzerType::SyntaxError, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::SyntaxError));
-        
-        // bugDetection->addSubAnalyzer(BugScanAnalyzerType::LogicalBug, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::LogicalBug));
+        bugDetection->addSubAnalyzer(BugScanAnalyzerType::LogicalError, AnalyzerFactory::createBugSubAnalyzer(BugScanAnalyzerType::LogicalError));
     }
 
     // Create AnalysisManager and add analyzers
