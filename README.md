@@ -99,14 +99,6 @@ These methods identify common logical bugs in C++ code:
 
 ---
 
-## 🚀 Example Output
-
-```plaintext
-Line 3: Potential incorrect comparison operator (use == instead of =)
-Line 7: Switch statement missing default case
-Line 12: Function may not return a value on all paths
-
----
 ## 🛠️ Future Work
 
 - 🌟 Add support for more advanced error detection using Abstract Syntax Tree (AST).
