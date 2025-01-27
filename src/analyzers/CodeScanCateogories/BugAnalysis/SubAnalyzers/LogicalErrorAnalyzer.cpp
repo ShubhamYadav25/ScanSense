@@ -12,6 +12,31 @@
 #include <stack>
 #include <unordered_map>
 
+/***
+ * Helper method
+ */
+// Utility function to split code into lines
+std::vector<std::string> splitIntoLines(const std::string &code)
+{
+    std::vector<std::string> lines;
+    size_t start = 0;
+    size_t end = code.find('\n');
+    while (end != std::string::npos)
+    {
+        lines.push_back(code.substr(start, end - start));
+        start = end + 1;
+        end = code.find('\n', start);
+    }
+    lines.push_back(code.substr(start));
+    return lines;
+}
+
+// Utility function to detect patterns in code
+bool containsPattern(const std::string &line, const std::regex &pattern)
+{
+    return std::regex_search(line, pattern);
+}
+
 LogicalErrorAnalyzer::LogicalErrorAnalyzer()
 {
     // Initialization
@@ -30,10 +55,18 @@ std::vector<Bug> LogicalErrorAnalyzer::analyze(const std::string &code)
     checkIncorrectBooleanLogic(code, bugs);
     checkIncorrectBooleanLogic(code, bugs);
     checkIncorrectOrderOfOperations(code, bugs);
+    checkIncorrectOrderOfOperations(code, bugs);
+    checkIncorrectSwitchCaseLogic(code, bugs);
+    checkIncorrectLoopVariableUpdates(code, bugs);
+    checkIncorrectSwitchCaseLogic(code, bugs);
+    checkIncorrectFunctionReturnLogic(code, bugs);
+    checkIncorrectRecursionLogic(code, bugs);
+    checkIncorrectEdgeCaseHandling(code, bugs);
+
     return bugs;
 }
 
-void LogicalErrorAnalyzer::checkIncorrectLoopConditions(const std::string &code, std::vector<Bug>& bugs)
+void LogicalErrorAnalyzer::checkIncorrectLoopConditions(const std::string &code, std::vector<Bug> &bugs)
 {
     std::regex loopRegex(R"((for|while)\s*\(([^;]*);([^;]*);([^)]*)\)\s*\{)");
     std::smatch matches;
@@ -72,7 +105,8 @@ void LogicalErrorAnalyzer::checkIncorrectLoopConditions(const std::string &code,
     }
 }
 
-void LogicalErrorAnalyzer::checkIncorrectBooleanLogic(const std::string& code, std::vector<Bug>& bugs) {
+void LogicalErrorAnalyzer::checkIncorrectBooleanLogic(const std::string &code, std::vector<Bug> &bugs)
+{
 
     /**
      * if (true) or if (false): Redundant conditions.
@@ -80,53 +114,59 @@ void LogicalErrorAnalyzer::checkIncorrectBooleanLogic(const std::string& code, s
      * if (x = y): Potential typo (assignment instead of comparison).
      */
     std::vector<std::pair<std::regex, std::string>> patterns = {
-        { std::regex(R"(\bif\s*\(\s*true\s*\))"), "Redundant condition: always true" },
-        { std::regex(R"(\bif\s*\(\s*false\s*\))"), "Redundant condition: always false" },
-        { std::regex(R"(\bif\s*\(\s*\w+\s*==\s*true\b)"), "Suspicious boolean expression: comparison with true" },
-        { std::regex(R"(\bif\s*\(\s*\w+\s*==\s*false\b)"), "Suspicious boolean expression: comparison with false" },
-        { std::regex(R"(\bif\s*\(\s*\w+\s*=\s*\w+\s*\))"), "Potential typo: assignment instead of comparison" }
-    };
+        {std::regex(R"(\bif\s*\(\s*true\s*\))"), "Redundant condition: always true"},
+        {std::regex(R"(\bif\s*\(\s*false\s*\))"), "Redundant condition: always false"},
+        {std::regex(R"(\bif\s*\(\s*\w+\s*==\s*true\b)"), "Suspicious boolean expression: comparison with true"},
+        {std::regex(R"(\bif\s*\(\s*\w+\s*==\s*false\b)"), "Suspicious boolean expression: comparison with false"},
+        {std::regex(R"(\bif\s*\(\s*\w+\s*=\s*\w+\s*\))"), "Potential typo: assignment instead of comparison"}};
 
     int lineNumber = 1;
     std::istringstream codeStream(code);
     std::string line;
 
     // Iterate through each line of the code
-    while (std::getline(codeStream, line)) {
-        for (const auto& pattern : patterns) {
-            if (std::regex_search(line, pattern.first)) {
-                bugs.push_back({ pattern.second, lineNumber });
+    while (std::getline(codeStream, line))
+    {
+        for (const auto &pattern : patterns)
+        {
+            if (std::regex_search(line, pattern.first))
+            {
+                bugs.push_back({pattern.second, lineNumber});
             }
         }
         lineNumber++;
     }
 }
 
-void LogicalErrorAnalyzer::checkIncorrectComparisonOperators(const std::string& code, std::vector<Bug>& bugs) {
+void LogicalErrorAnalyzer::checkIncorrectComparisonOperators(const std::string &code, std::vector<Bug> &bugs)
+{
     std::vector<std::pair<std::regex, std::string>> patterns = {
-        { std::regex(R"(\b\w+\s*==\s*true\b)"), "Suspicious comparison: == with true" },
-        { std::regex(R"(\b\w+\s*==\s*false\b)"), "Suspicious comparison: == with false" },
-        { std::regex(R"(\b\w+\s*!=\s*true\b)"), "Suspicious comparison: != with true" },
-        { std::regex(R"(\b\w+\s*!=\s*false\b)"), "Suspicious comparison: != with false" },
-        { std::regex(R"(\b\w+\s*=\s*\w+\b)"), "Potential typo: = instead of ==" }
-    };
+        {std::regex(R"(\b\w+\s*==\s*true\b)"), "Suspicious comparison: == with true"},
+        {std::regex(R"(\b\w+\s*==\s*false\b)"), "Suspicious comparison: == with false"},
+        {std::regex(R"(\b\w+\s*!=\s*true\b)"), "Suspicious comparison: != with true"},
+        {std::regex(R"(\b\w+\s*!=\s*false\b)"), "Suspicious comparison: != with false"},
+        {std::regex(R"(\b\w+\s*=\s*\w+\b)"), "Potential typo: = instead of =="}};
 
     int lineNumber = 1;
     std::istringstream codeStream(code);
     std::string line;
 
     // Iterate through each line of the code
-    while (std::getline(codeStream, line)) {
-        for (const auto& pattern : patterns) {
-            if (std::regex_search(line, pattern.first)) {
-                bugs.push_back({ pattern.second, lineNumber });
+    while (std::getline(codeStream, line))
+    {
+        for (const auto &pattern : patterns)
+        {
+            if (std::regex_search(line, pattern.first))
+            {
+                bugs.push_back({pattern.second, lineNumber});
             }
         }
         lineNumber++;
     }
 }
 
-void LogicalErrorAnalyzer::checkIncorrectOrderOfOperations(const std::string& code, std::vector<Bug>& bugs) {
+void LogicalErrorAnalyzer::checkIncorrectOrderOfOperations(const std::string &code, std::vector<Bug> &bugs)
+{
 
     /***
      * Arithmetic expressions: Matches expressions like a + b * c where parentheses might be missing.
@@ -134,21 +174,138 @@ void LogicalErrorAnalyzer::checkIncorrectOrderOfOperations(const std::string& co
      */
 
     std::vector<std::pair<std::regex, std::string>> patterns = {
-        { std::regex(R"(\b\w+\s*[+\-*/]\s*\w+\s*[+\-*/]\s*\w+\b)"), "Potential issue: missing parentheses in arithmetic expression" },
-        { std::regex(R"(\b\w+\s*&&\s*\w+\s*\|\|\s*\w+\b)"), "Potential issue: missing parentheses in logical expression" }
-    };
+        {std::regex(R"(\b\w+\s*[+\-*/]\s*\w+\s*[+\-*/]\s*\w+\b)"), "Potential issue: missing parentheses in arithmetic expression"},
+        {std::regex(R"(\b\w+\s*&&\s*\w+\s*\|\|\s*\w+\b)"), "Potential issue: missing parentheses in logical expression"}};
 
     int lineNumber = 1;
     std::istringstream codeStream(code);
     std::string line;
 
     // Iterate through each line of the code
-    while (std::getline(codeStream, line)) {
-        for (const auto& pattern : patterns) {
-            if (std::regex_search(line, pattern.first)) {
-                bugs.push_back({ pattern.second, lineNumber });
+    while (std::getline(codeStream, line))
+    {
+        for (const auto &pattern : patterns)
+        {
+            if (std::regex_search(line, pattern.first))
+            {
+                bugs.push_back({pattern.second, lineNumber});
             }
         }
         lineNumber++;
     }
 }
+
+void LogicalErrorAnalyzer::checkIncorrectLoopVariableUpdates(const std::string &code, std::vector<Bug> &bugs)
+{
+    std::regex loopPattern(R"((for\s*\(.*;.*;.*\)|while\s*\(.*\)))");
+    std::regex updatePattern(R"((\+\+|--|[+-]=))");
+    auto lines = splitIntoLines(code);
+
+    for (size_t i = 0; i < lines.size(); ++i)
+    {
+        if (containsPattern(lines[i], loopPattern) && !containsPattern(lines[i], updatePattern))
+        {
+            bugs.push_back({"Potential incorrect loop variable update", static_cast<int>(i + 1)});
+        }
+    }
+}
+
+void LogicalErrorAnalyzer::checkIncorrectSwitchCaseLogic(const std::string &code, std::vector<Bug> &bugs)
+{
+    std::regex switchPattern(R"(switch\s*\(.*\)\s*\{)");
+    std::regex defaultPattern(R"(default\s*:)");
+    auto lines = splitIntoLines(code);
+    bool inSwitch = false;
+
+    for (size_t i = 0; i < lines.size(); ++i)
+    {
+        if (containsPattern(lines[i], switchPattern))
+        {
+            inSwitch = true;
+        }
+        if (inSwitch && containsPattern(lines[i], defaultPattern))
+        {
+            inSwitch = false;
+        }
+        if (inSwitch && lines[i].find('}') != std::string::npos)
+        {
+            bugs.push_back({"Switch statement missing default case", static_cast<int>(i + 1)});
+            inSwitch = false;
+        }
+    }
+}
+
+void LogicalErrorAnalyzer::checkIncorrectFunctionReturnLogic(const std::string &code, std::vector<Bug> &bugs)
+{
+    std::regex functionPattern(R"(\w+\s+\w+\s*\(.*\)\s*\{)");
+    std::regex returnPattern(R"(return\s+[^;]+;)");
+    auto lines = splitIntoLines(code);
+    bool inFunction = false;
+    bool hasReturn = false;
+
+    for (size_t i = 0; i < lines.size(); ++i)
+    {
+        if (containsPattern(lines[i], functionPattern))
+        {
+            inFunction = true;
+            hasReturn = false;
+        }
+        if (inFunction && containsPattern(lines[i], returnPattern))
+        {
+            hasReturn = true;
+        }
+        if (inFunction && lines[i].find('}') != std::string::npos)
+        {
+            if (!hasReturn)
+            {
+                bugs.push_back({"Function may not return a value on all paths", static_cast<int>(i + 1)});
+            }
+            inFunction = false;
+        }
+    }
+}
+
+void LogicalErrorAnalyzer::checkIncorrectRecursionLogic(const std::string &code, std::vector<Bug> &bugs)
+{
+    std::regex functionPattern(R"(\w+\s+\w+\s*\(.*\)\s*\{)");
+    std::regex baseCasePattern(R"(if\s*\(.*\)\s*return)");
+    auto lines = splitIntoLines(code);
+    bool inFunction = false;
+    bool hasBaseCase = false;
+
+    for (size_t i = 0; i < lines.size(); ++i)
+    {
+        if (containsPattern(lines[i], functionPattern))
+        {
+            inFunction = true;
+            hasBaseCase = false;
+        }
+        if (inFunction && containsPattern(lines[i], baseCasePattern))
+        {
+            hasBaseCase = true;
+        }
+        if (inFunction && lines[i].find('}') != std::string::npos)
+        {
+            if (!hasBaseCase)
+            {
+                bugs.push_back({"Recursive function may lack a base case", static_cast<int>(i + 1)});
+            }
+            inFunction = false;
+        }
+    }
+}
+
+void LogicalErrorAnalyzer::checkIncorrectEdgeCaseHandling(const std::string &code, std::vector<Bug> &bugs)
+{
+    std::regex edgeCasePattern(R"(if\s*\(\s*\w+\s*==\s*nullptr\s*\)|\s*if\s*\(\s*\w+\s*==\s*0\s*\))");
+    auto lines = splitIntoLines(code);
+
+    for (size_t i = 0; i < lines.size(); ++i)
+    {
+        if (!containsPattern(lines[i], edgeCasePattern))
+        {
+            bugs.push_back({"Potential missing edge case handling", static_cast<int>(i + 1)});
+        }
+    }
+}
+

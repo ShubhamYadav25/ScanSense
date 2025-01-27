@@ -21,59 +21,20 @@ private:
     // 4. Incorrect Order of Operations
     void checkIncorrectOrderOfOperations(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 8. Incorrect Loop Variable Updates
-    // void checkIncorrectLoopVariableUpdates(const std::string& code, std::vector<Bug>& bugs);
+    // 5. Incorrect Loop Variable Updates
+    void checkIncorrectLoopVariableUpdates(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 9. Incorrect Switch-Case Logic
-    // void checkIncorrectSwitchCaseLogic(const std::string& code, std::vector<Bug>& bugs);
+    // 6. Incorrect Switch-Case Logic
+    void checkIncorrectSwitchCaseLogic(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 10. Incorrect Function Return Logic
-    // void checkIncorrectFunctionReturnLogic(const std::string& code, std::vector<Bug>& bugs);
+    // 7. Incorrect Function Return Logic
+    void checkIncorrectFunctionReturnLogic(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 11. Incorrect Recursion Logic
-    // void checkIncorrectRecursionLogic(const std::string& code, std::vector<Bug>& bugs);
+    // 8. Incorrect Recursion Logic
+    void checkIncorrectRecursionLogic(const std::string& code, std::vector<Bug>& bugs);
 
-    // // 12. Incorrect State Transitions
-    // void checkIncorrectStateTransitions(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 13. Incorrect Mathematical Formulas
-    // void checkIncorrectMathematicalFormulas(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 14. Incorrect Handling of Edge Cases
-    // void checkIncorrectEdgeCaseHandling(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 15. Incorrect Control Flow
-    // void checkIncorrectControlFlow(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 16. Incorrect String or Array Manipulation
-    // void checkIncorrectStringOrArrayManipulation(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 17. Incorrect Handling of Null or Empty Values
-    // void checkIncorrectNullOrEmptyHandling(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 18. Incorrect Use of Flags or Enums
-    // void checkIncorrectFlagOrEnumUsage(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 19. Incorrect Error Handling Logic
-    // void checkIncorrectErrorHandlingLogic(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 20. Incorrect Algorithm Implementation
-    // void checkIncorrectAlgorithmImplementation(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 21. Incorrect Use of Logical Short-Circuiting
-    // void checkIncorrectShortCircuiting(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 22. Incorrect Handling of Time or Date Logic
-    // void checkIncorrectTimeOrDateLogic(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 23. Incorrect Use of Bitwise Operators
-    // void checkIncorrectBitwiseOperations(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 24. Incorrect Handling of Floating-Point Precision
-    // void checkIncorrectFloatingPointHandling(const std::string& code, std::vector<Bug>& bugs);
-
-    // // 25. Incorrect Logic in Stateful Operations
-    // void checkIncorrectStatefulLogic(const std::string& code, std::vector<Bug>& bugs);
+    // 9. Incorrect Handling of Edge Cases
+    void checkIncorrectEdgeCaseHandling(const std::string& code, std::vector<Bug>& bugs);
 
     // Report errors
     void reportErrors();
